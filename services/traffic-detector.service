@@ -1,0 +1,17 @@
+[Unit]
+Description=Traffic Violation Detection System
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/Embedded AI-Based Traffic Violation Detection System
+Environment="PATH=/home/pi/Embedded AI-Based Traffic Violation Detection System/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+ExecStart=/home/pi/Embedded AI-Based Traffic Violation Detection System/venv/bin/python run_edge.py --mode full --no-display
+Restart=on-failure
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
