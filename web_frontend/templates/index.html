@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic Violation Detection System</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-icon">🚦</span>
+                <div>
+                    <h1>Traffic Violation Detection</h1>
+                    <p style="font-size: 0.85rem; color: #9ca3af;">AI-Powered Monitoring System</p>
+                </div>
+            </div>
+            <div class="status-badge">
+                <div class="status-dot"></div>
+                <span>System Active</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Statistics Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-icon">📊</span>
+                </div>
+                <div class="stat-value" id="totalViolations">0</div>
+                <div class="stat-label">Total Violations</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-icon">📅</span>
+                </div>
+                <div class="stat-value" id="todayViolations">0</div>
+                <div class="stat-label">Today's Violations</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-icon">🎯</span>
+                </div>
+                <div class="stat-value" id="activeDetections">0</div>
+                <div class="stat-label">Active Detections</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-icon">⏱️</span>
+                </div>
+                <div class="stat-value" id="systemUptime">0h 0m</div>
+                <div class="stat-label">System Uptime</div>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="content-grid">
+            <!-- Video Feed Section -->
+            <div class="video-section">
+                <div class="section-header">
+                    <h2 class="section-title">🎥 Live Detection Feed</h2>
+                    <div class="controls">
+                        <button class="btn btn-success" id="startBtn">
+                            <span>▶️</span> Start
+                        </button>
+                        <button class="btn btn-danger" id="stopBtn">
+                            <span>⏹️</span> Stop
+                        </button>
+                        <button class="btn btn-primary" id="captureBtn">
+                            <span>📸</span> Capture
+                        </button>
+                    </div>
+                </div>
+                <div class="video-container">
+                    <img id="videoFeed" src="/static/images/placeholder.jpg" alt="Video Feed">
+                    <div class="video-overlay">
+                        <div class="fps-counter">
+                            <span>FPS: </span><span id="fpsCounter">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Violations Section -->
+            <div class="violations-section">
+                <div class="section-header">
+                    <h2 class="section-title">🚨 Recent Violations</h2>
+                    <button class="btn btn-primary" id="exportBtn">
+                        <span>📥</span> Export
+                    </button>
+                </div>
+                <div class="violations-list" id="violationsList">
+                    <!-- Violations will be dynamically added here -->
+                    <div class="violation-item">
+                        <div class="violation-header">
+                            <span class="violation-type">🚨 No Helmet</span>
+                            <span class="violation-time">Waiting for data...</span>
+                        </div>
+                        <div class="violation-details">
+                            System is ready to detect violations
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings and Logs Grid -->
+        <div class="content-grid">
+            <!-- Settings Panel -->
+            <div class="settings-panel">
+                <div class="section-header" style="padding: 0; margin-bottom: 1.5rem;">
+                    <h2 class="section-title">⚙️ System Settings</h2>
+                </div>
+                
+                <div class="setting-group">
+                    <label class="setting-label" for="confidenceThreshold">
+                        Detection Confidence Threshold
+                    </label>
+                    <input 
+                        type="range" 
+                        id="confidenceThreshold" 
+                        class="setting-input" 
+                        min="0.1" 
+                        max="1.0" 
+                        step="0.05" 
+                        value="0.5"
+                    >
+                    <span id="confidenceValue">0.5</span>
+                </div>
+                
+                <div class="setting-group">
+                    <label class="setting-label" for="speedLimit">
+                        Speed Limit (km/h)
+                    </label>
+                    <input 
+                        type="number" 
+                        id="speedLimit" 
+                        class="setting-input" 
+                        value="60"
+                        min="20"
+                        max="120"
+                    >
+                </div>
+                
+                <div class="setting-group">
+                    <label class="setting-label" for="processFrames">
+                        Process Every N Frames
+                    </label>
+                    <input 
+                        type="number" 
+                        id="processFrames" 
+                        class="setting-input" 
+                        value="1"
+                        min="1"
+                        max="10"
+                    >
+                </div>
+                
+                <button class="btn btn-primary" id="saveSettingsBtn" style="width: 100%;">
+                    <span>💾</span> Save Settings
+                </button>
+            </div>
+
+            <!-- System Logs Section -->
+            <div class="logs-section">
+                <div class="section-header">
+                    <h2 class="section-title">📋 System Logs</h2>
+                    <button class="btn btn-primary" onclick="document.getElementById('logsContainer').innerHTML = ''">
+                        <span>🗑️</span> Clear
+                    </button>
+                </div>
+                <div class="logs-container" id="logsContainer">
+                    <div class="log-entry info">
+                        <span class="log-time">[--:--:--]</span>
+                        <span class="log-message">System initialized and ready</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Info Section -->
+        <div class="settings-panel" style="margin-top: 2rem;">
+            <div class="section-header" style="padding: 0; margin-bottom: 1rem;">
+                <h2 class="section-title">ℹ️ System Information</h2>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                <div>
+                    <div style="color: #9ca3af; font-size: 0.85rem;">Platform</div>
+                    <div style="font-weight: 600;">Windows</div>
+                </div>
+                <div>
+                    <div style="color: #9ca3af; font-size: 0.85rem;">Device</div>
+                    <div style="font-weight: 600;">CPU</div>
+                </div>
+                <div>
+                    <div style="color: #9ca3af; font-size: 0.85rem;">Model</div>
+                    <div style="font-weight: 600;">YOLO11n</div>
+                </div>
+                <div>
+                    <div style="color: #9ca3af; font-size: 0.85rem;">Version</div>
+                    <div style="font-weight: 600;">1.0.0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/static/js/app.js"></script>
+    <script>
+        // Update confidence value display
+        document.getElementById('confidenceThreshold').addEventListener('input', (e) => {
+            document.getElementById('confidenceValue').textContent = e.target.value;
+        });
+    </script>
+</body>
+</html>
